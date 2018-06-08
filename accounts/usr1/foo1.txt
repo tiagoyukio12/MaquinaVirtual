@@ -1,0 +1,5 @@
+    @    1000    ; Carrega programa em 1000
+INIC
+    LD   VAR     ; Carrega VAR no acumulador
+VAR K    99      ; VAR = 99
+    #    INIC    ; Inicia programa em INIC
