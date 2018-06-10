@@ -1,21 +1,26 @@
 package com.company;
 
 class Memoria {
-    private char[] memory;
+    private String[] memory;
     private int pc;
 
     Memoria() {
-        memory = new char[0x10000]; // enderecos de 0 a ffff
+        memory = new String[0x10000]; // enderecos de 0 a ffff
         pc = 0;
+        String sLoader = "0d000006003f0900410d00000400410e00000900410d00000900430d00000e000108004305004501002d00001b0d000006003f0900410d00000400410f00000100000000000001";
+        int i = 0;
+        while (!sLoader.isEmpty()) {
+            memory[i++] = sLoader.substring(0, 2);
+            sLoader = sLoader.substring(2);
+        }
     }
 
     private void modify(int addr, String byteData) {
-        memory[addr] = byteData.charAt(0);
-        memory[addr + 1] = byteData.charAt(1);
+        memory[addr] = byteData;
     }
 
     private String read(int addr) {
-        return Character.toString(memory[addr]).concat(Character.toString(memory[addr + 1]));
+        return memory[addr];
     }
     void runTest() {
         modify(0, "03");

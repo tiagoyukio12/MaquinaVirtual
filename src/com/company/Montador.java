@@ -5,16 +5,18 @@ import java.util.HashMap;
 
 class Montador {
     private int ic;
-    private HashMap<String, String> TabSimb;
-    private HashMap<String, Integer> TabMne;
+    private int byteCounter;
+    private HashMap<String, String> tabSimb;
+    private HashMap<String, Integer> tabMne;
 
     Montador() {
         ic = 0;
-        TabSimb = new HashMap<>();
-        TabMne = new HashMap<>();
+        byteCounter = 0;
+        tabSimb = new HashMap<>();
+        tabMne = new HashMap<>();
     }
 
-    public void gerarCodObj(String filename) throws FileNotFoundException, UnsupportedEncodingException {
+    void gerarCodObj(String filename) throws FileNotFoundException {
         File file = new File(filename);
         execPasso1(file);
         execPasso2(file);
@@ -30,34 +32,34 @@ class Montador {
                     while (icString.length() < 4) {
                         icString = "0".concat(icString);
                     }
-
-                    TabSimb.put(split[0], icString.substring(1));
+                    tabSimb.put(split[0], icString);
                     if (split.length > 1)
                         if (split[1].equals("K")) {  // simbolo
-                            ic++;
+                            ic += 2;
                         }
                 } else {
                     switch (split[1]) {
                         case "@":
                             ic = Integer.parseInt(split[2], 16);
+                            byteCounter = ic;
                             break;
                         case "#":
                             // termina passo
                             break;
                         default:   // Uma das 16 instrucoes de 2 bytes
-                            ic += 2;
+                            ic += 3;
                             // TODO: usar tabMne e checar erros
                             break;
                     }
                 }
-
             }
+            byteCounter = ic - byteCounter;
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void execPasso2(File file) throws FileNotFoundException, UnsupportedEncodingException {
+    private void execPasso2(File file) throws FileNotFoundException {
         File output = new File("objAbs.txt");
         System.out.println(output.getAbsolutePath());
         PrintWriter writer = new PrintWriter(output);
@@ -74,84 +76,92 @@ class Montador {
                             while (icString.length() < 4) {
                                 icString = "0".concat(icString);
                             }
-                            writer.println(icString);
+                            String byteCounterString = Integer.toHexString(byteCounter);
+                            while (byteCounterString.length() < 2) {
+                                byteCounterString = "0".concat(byteCounterString);
+                            }
+                            writer.println(icString + byteCounterString);
                             break;
                         case "#":
                             icString = Integer.toHexString(ic);
                             while (icString.length() < 4) {
                                 icString = "0".concat(icString);
                             }
-                            String inicExec = icString.charAt(0) + TabSimb.get(split[2]);
+                            String inicExec = tabSimb.get(split[2]);
                             writer.write("\n" + inicExec);
                             break;
                         case "JP":
-                            writer.write("0" + TabSimb.get(split[2]));
-                            ic += 2;
+                            writer.write("00" + tabSimb.get(split[2]));
+                            ic += 3;
                             break;
                         case "JZ":
-                            writer.write("1" + TabSimb.get(split[2]));
-                            ic += 2;
+                            writer.write("01" + tabSimb.get(split[2]));
+                            ic += 3;
                             break;
                         case "JN":
-                            writer.write("2" + TabSimb.get(split[2]));
-                            ic += 2;
+                            writer.write("02" + tabSimb.get(split[2]));
+                            ic += 3;
                             break;
                         case "LV":
-                            writer.write("3" + split[2]);
-                            ic += 2;
+                            writer.write("03" + split[2]);
+                            ic += 3;
                             break;
                         case "+":
-                            writer.write("4" + TabSimb.get(split[2]));
-                            ic += 2;
+                            writer.write("04" + tabSimb.get(split[2]));
+                            ic += 3;
                             break;
                         case "-":
-                            writer.write("5" + TabSimb.get(split[2]));
-                            ic += 2;
+                            writer.write("05" + tabSimb.get(split[2]));
+                            ic += 3;
                             break;
                         case "*":
-                            writer.write("6" + TabSimb.get(split[2]));
-                            ic += 2;
+                            writer.write("06" + tabSimb.get(split[2]));
+                            ic += 3;
                             break;
                         case "/":
-                            writer.write("7" + TabSimb.get(split[2]));
-                            ic += 2;
+                            writer.write("07" + tabSimb.get(split[2]));
+                            ic += 3;
                             break;
                         case "LD":
-                            writer.write("8" + TabSimb.get(split[2]));
-                            ic += 2;
+                            writer.write("08" + tabSimb.get(split[2]));
+                            ic += 3;
                             break;
                         case "MM":
-                            writer.write("9" + TabSimb.get(split[2]));
-                            ic += 2;
+                            writer.write("09" + tabSimb.get(split[2]));
+                            ic += 3;
                             break;
                         case "SC":
-                            writer.write("a" + TabSimb.get(split[2]));
-                            ic += 2;
+                            writer.write("0a" + tabSimb.get(split[2]));
+                            ic += 3;
                             break;
                         case "RS":
-                            writer.write("b" + TabSimb.get(split[2]));
-                            ic += 2;
+                            writer.write("0b" + tabSimb.get(split[2]));
+                            ic += 3;
                             break;
                         case "HM":
-                            writer.write("c000");
-                            ic += 2;
+                            writer.write("0c0000");
+                            ic += 3;
                             break;
                         case "GD":
-                            writer.write("d" + split[2]);
-                            ic += 2;
+                            writer.write("0d" + split[2]);
+                            ic += 3;
                             break;
                         case "PD":
-                            writer.write("e" + split[2]);
-                            ic += 2;
+                            writer.write("0e" + split[2]);
+                            ic += 3;
                             break;
                         case "SO":
-                            writer.write("f000");
-                            ic += 2;
+                            writer.write("0f0000");
+                            ic += 3;
                             break;
                     }
                 } else if (split.length > 1) {
-                    if (split[1].equals("K"))
+                    if (split[1].equals("K")) {
+                        while (split[2].length() < 4)
+                            split[2] = "0".concat(split[2]);
                         writer.print(split[2]);
+                        ic += 2;
+                    }
                 }
             }
         } catch (IOException e) {

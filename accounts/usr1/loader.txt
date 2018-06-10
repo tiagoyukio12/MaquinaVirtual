@@ -1,0 +1,30 @@
+    @    0000    ; Carrega programa em 0000
+INIC
+    GD   0000    ; Pega byte mais significativo do endereco inicial
+    *    CEM     ; Desloca byte mais significativo duas casas
+    MM   PC      ;
+    GD   0000    ; Pega byte menos significativo
+    +    PC      ; Soma byte mais e menos significativos
+    PD   0000    ; Armazena a partir de PC
+    MM   PC      ; Armazena resultado em PC
+    GD   0000    ; Pega numero de bytes de dados
+    MM   COUNT
+DADO
+    GD  0000
+    PD  0001
+    LD  COUNT
+    -   UM
+    JZ  EXEC
+    JP  DADO
+EXEC
+    GD  0000
+    *   CEM
+    MM  PC
+    GD  0000
+    +   PC
+    SO  0000    ; Executa a partir do end em AC
+CEM K  100
+PC  K  0
+COUNT K 0
+UM  K  1
+    #    INIC    ; Inicia programa em INIC
