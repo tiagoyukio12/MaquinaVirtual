@@ -1,8 +1,6 @@
 package com.company;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,7 +10,7 @@ import java.util.stream.Stream;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        Memoria memory = new Memoria();
+        Memory memory = new Memory();
 
         // Login
         System.out.println("Usuarios disponiveis: ");
@@ -42,9 +40,9 @@ public class Main {
                 case "DEL":
                     break label;
                 case "RUN":
-                    Montador montador = new Montador();
-                    montador.gerarCodObj(".\\accounts\\" + userName + "\\" + cmd[1]);
-                    memory.run(0);
+                    Assembler assembler = new Assembler();
+                    assembler.gerarCodObj(".\\accounts\\" + userName + "\\" + cmd[1]);
+                    memory.run(2);
                     break;
                 case "END":
                     break label;

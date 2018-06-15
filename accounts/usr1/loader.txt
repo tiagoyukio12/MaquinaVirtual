@@ -9,6 +9,7 @@ INIC
     MM   PC      ; Armazena resultado em PC
     GD   0000    ; Pega numero de bytes de dados
     MM   COUNT
+    JP   DADO
 DADO
     GD  0000
     PD  0001

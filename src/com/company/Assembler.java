@@ -3,13 +3,13 @@ package com.company;
 import java.io.*;
 import java.util.HashMap;
 
-class Montador {
+class Assembler {
     private int ic;
     private int byteCounter;
     private HashMap<String, String> tabSimb;
     private HashMap<String, Integer> tabMne;
 
-    Montador() {
+    Assembler() {
         ic = 0;
         byteCounter = 0;
         tabSimb = new HashMap<>();
@@ -27,10 +27,17 @@ class Montador {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] split = line.split("\\s+");
-                if (line.charAt(0) != ' ') {  // Tem declaracao de simbolo ou label
-                    tabSimb.put(split[0], intToWord(ic));
-                    if (split.length > 1)
+                if (line.charAt(0) != ' ') {
+                    // Declaracao de simbolo
+                    if (split.length > 1) {
+                        tabSimb.put(split[0], intToWord(ic));
                         ic += 2;
+                    }
+                    // Declaracao de label
+                    else {
+                        ic += 2;
+                        tabSimb.put(split[0], intToWord(ic));
+                    }
                 } else {
                     switch (split[1]) {
                         case "@":
@@ -152,6 +159,9 @@ class Montador {
                         writer.print(split[2]);
                         ic += 2;
                     }
+                } else {
+                    writer.print("0000");  // Reserva para endereco de retorno
+                    ic += 2;
                 }
             }
         } catch (IOException e) {

@@ -4,14 +4,14 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-class Memoria {
+class Memory {
     private String[] memory;
     private int ac;
     private int ic;
 
-    Memoria() {
+    Memory() {
         memory = new String[0x10000]; // enderecos de 0 a ffff
-        String sLoader = "0d00000600450900470d00000400470e00000900470d00000900490d00000e000108004905004b09004901003000001b0d00000600450900470d00000400470900470f00010100000000000001";
+        String sLoader = "00000d000006004e0900500d00000400500e00000900500d000009005200002200000d00000e000108005205005409005201003900002200000d000006004e0900500d00000400500900500f00010100000000000001";
         int i = 0;
         while (!sLoader.isEmpty()) {
             memory[i++] = sLoader.substring(0, 2);
@@ -92,12 +92,12 @@ class Memoria {
                     modify(op + 1, intToWord(ac).substring(2));
                     break;
                 case "0a":  // SC;
-                    modify(op, intToWord(ic).substring(0, 2));
-                    modify(op + 1, intToWord(ic).substring(2));
-                    ic = op + 2;
+                    modify(op - 2, intToWord(ic).substring(0, 2));
+                    modify(op - 1, intToWord(ic).substring(2));
+                    ic = op;
                     break;
                 case "0b":  // RS
-                    ic = op;
+                    ic = Integer.valueOf(readWord(op - 2), 16);
                     break;
                 case "0c":  // HM
                     // TODO: parar (?)
