@@ -1,0 +1,16 @@
+    @    1000    ; Carrega programa em 1000
+MULT
+    MM   N2
+    *    N2   
+    PD   0002      ; Imprime N2
+    RS   MULT
+INIC
+    GD   0001    ; Le 2 bytes digitados pelo usuario
+    SC   MULT
+    JP   DNV
+DNV
+    GD   0001
+    JZ   INIC
+    SO   0000      ; Retorna comando ao Sistema Operacional
+N2  K       0
+    #    INIC    ; Inicia programa em INIC

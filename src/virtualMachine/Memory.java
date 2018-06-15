@@ -3,6 +3,7 @@ package virtualMachine;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Scanner;
 
 class Memory {
     private String[] memory;
@@ -108,6 +109,10 @@ class Memory {
                         String readByte = Character.toString((char) br.read());
                         readByte = readByte.concat(Character.toString((char) br.read()));
                         ac = Integer.valueOf(readByte, 16);
+                    } else if (op == 1) {
+                        Scanner scanIn = new Scanner(System.in);
+                        String input = scanIn.nextLine();
+                        ac = Integer.valueOf(input, 16);
                     }
                     break;
                 case "0e":  // PD
