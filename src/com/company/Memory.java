@@ -116,7 +116,7 @@ class Memory {
                     } else if (op == 1) {
                         modify(pc++, intToWord(ac).substring(2));
                     } else if (op == 2) {
-                        System.out.println(ac);
+                        System.out.println("ACC: " + intToWord(ac));
                     }
                     break;
                 case "0f":  // SO
@@ -138,5 +138,12 @@ class Memory {
         while (ret.length() < 4)
             ret = "0".concat(ret);
         return ret;
+    }
+
+    void logOff() {
+        System.out.println("Value of registers: ");
+        System.out.println("ACC: " + intToWord(ac));
+        System.out.println("IC: " + intToWord(ic));
+        System.out.println("Turning off Virtual Machine...");
     }
 }

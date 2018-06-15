@@ -62,7 +62,6 @@ class Assembler {
 
     private void execPasso2(File file) throws FileNotFoundException {
         File output = new File("objAbs.txt");
-        System.out.println(output.getAbsolutePath());
         PrintWriter writer = new PrintWriter(output);
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
