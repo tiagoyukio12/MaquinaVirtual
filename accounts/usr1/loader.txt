@@ -14,6 +14,7 @@ DADO
     PD  0001
     LD  COUNT
     -   UM
+    MM  COUNT
     JZ  EXEC
     JP  DADO
 EXEC
@@ -22,7 +23,8 @@ EXEC
     MM  PC
     GD  0000
     +   PC
-    SO  0000    ; Executa a partir do end em AC
+    MM  PC
+    SO  0001       ; Executa o programa carregado
 CEM K  100
 PC  K  0
 COUNT K 0

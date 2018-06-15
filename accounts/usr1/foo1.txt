@@ -1,5 +1,7 @@
     @    0500    ; Carrega programa em 0500
 INIC
     LD   VAR       ; Le 2 bytes de VAR
+    PD   0002      ; Imprime VAR no terminal
+    SO   0000      ; Retorna comando ao Sistema Operacional
 VAR K    99      ; VAR = 99
     #    INIC    ; Inicia programa em INIC

@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 
 public class Main {
 
-    public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
+    public static void main(String[] args) throws IOException {
         Memoria memory = new Memoria();
 
         // Login
@@ -42,13 +42,9 @@ public class Main {
                 case "DEL":
                     break label;
                 case "RUN":
-                    if (cmd[1].equals("TESTE")) {
-                        memory.runTest();
-                        memory.run(0);
-                    } else {
-                        Montador montador = new Montador();
-                        montador.gerarCodObj(".\\accounts\\" + userName + "\\" + cmd[1]);
-                    }
+                    Montador montador = new Montador();
+                    montador.gerarCodObj(".\\accounts\\" + userName + "\\" + cmd[1]);
+                    memory.run(0);
                     break;
                 case "END":
                     break label;

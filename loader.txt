@@ -13,7 +13,7 @@ DADO
     GD  0000
     PD  0001
     LD  COUNT
-    -   0001
+    -   UM
     JZ  EXEC
     JP  DADO
 EXEC
@@ -22,8 +22,10 @@ EXEC
     MM  PC
     GD  0000
     +   PC
-    SO  0000    ; Executa a partir do end em AC
-VAR CEM  100
-VAR PC   0
-VAR COUNT 0
+    MM  PC
+    JP  PC       ; Executa o programa carregado
+CEM K  100
+PC  K  0
+COUNT K 0
+UM  K  1
     #    INIC    ; Inicia programa em INIC

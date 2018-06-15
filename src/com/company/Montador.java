@@ -28,19 +28,13 @@ class Montador {
             while ((line = reader.readLine()) != null) {
                 String[] split = line.split("\\s+");
                 if (line.charAt(0) != ' ') {  // Tem declaracao de simbolo ou label
-                    String icString = Integer.toHexString(ic);
-                    while (icString.length() < 4) {
-                        icString = "0".concat(icString);
-                    }
-                    tabSimb.put(split[0], icString);
+                    tabSimb.put(split[0], intToWord(ic));
                     if (split.length > 1)
-                        if (split[1].equals("K")) {  // simbolo
-                            ic += 2;
-                        }
+                        ic += 2;
                 } else {
                     switch (split[1]) {
                         case "@":
-                            ic = Integer.parseInt(split[2], 16);
+                            ic = Integer.valueOf(split[2], 16);
                             byteCounter = ic;
                             break;
                         case "#":
@@ -71,24 +65,20 @@ class Montador {
                 if (line.charAt(0) == ' ') {
                     switch (split[1]) {
                         case "@":
-                            ic = Integer.parseInt(split[2], 16);
+                            ic = Integer.valueOf(split[2], 16);
                             icString = Integer.toHexString(ic);
                             while (icString.length() < 4) {
                                 icString = "0".concat(icString);
                             }
-                            String byteCounterString = Integer.toHexString(byteCounter);
+                            String byteCounterString = Integer.toHexString(byteCounter + 3);
                             while (byteCounterString.length() < 2) {
                                 byteCounterString = "0".concat(byteCounterString);
                             }
-                            writer.println(icString + byteCounterString);
+                            writer.write(intToWord(ic) + intToWord(byteCounter).substring(2));
                             break;
                         case "#":
-                            icString = Integer.toHexString(ic);
-                            while (icString.length() < 4) {
-                                icString = "0".concat(icString);
-                            }
                             String inicExec = tabSimb.get(split[2]);
-                            writer.write("\n" + inicExec);
+                            writer.write(inicExec); // writer.write("\n" + inicExec);
                             break;
                         case "JP":
                             writer.write("00" + tabSimb.get(split[2]));
@@ -151,7 +141,7 @@ class Montador {
                             ic += 3;
                             break;
                         case "SO":
-                            writer.write("0f0000");
+                            writer.write("0f" + split[2]);
                             ic += 3;
                             break;
                     }
@@ -168,5 +158,15 @@ class Montador {
             e.printStackTrace();
         }
         writer.close();
+    }
+
+    private String intToWord(int data) {
+        String ret = Integer.toHexString(data);
+        if (ret.length() > 4) {
+            System.out.println("Error: Value " + data + " is not a word");
+        }
+        while (ret.length() < 4)
+            ret = "0".concat(ret);
+        return ret;
     }
 }
