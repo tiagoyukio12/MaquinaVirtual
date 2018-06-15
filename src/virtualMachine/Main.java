@@ -1,4 +1,4 @@
-package com.company;
+package virtualMachine;
 
 import java.io.File;
 import java.io.IOException;

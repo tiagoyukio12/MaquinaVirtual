@@ -1,4 +1,4 @@
-package com.company;
+package virtualMachine;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

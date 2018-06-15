@@ -1,4 +1,4 @@
-package com.company;
+package virtualMachine;
 
 import java.io.*;
 import java.util.HashMap;
