@@ -1,0 +1,19 @@
+    @    f000    ; Carrega programa em f000
+NEG
+    PD   0002
+    +    UM
+    JZ   ACAB
+    JP   NEG
+POS
+    PD   0002
+    -    UM
+    JZ   ACAB
+    JP   POS
+INIC
+    GD   0001    ; Le 2 bytes digitados pelo usuario
+    JN   NEG
+    JP   POS
+ACAB
+    SO   0000      ; Retorna comando ao Sistema Operacional
+UM  K       1
+    #    INIC    ; Inicia programa em INIC

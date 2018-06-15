@@ -10,7 +10,9 @@ INIC
     JP   DNV
 DNV
     GD   0001
+    -    UM
     JZ   INIC
     SO   0000      ; Retorna comando ao Sistema Operacional
-N2  K       0
+N2  K    0
+UM  K    1
     #    INIC    ; Inicia programa em INIC

@@ -21,6 +21,7 @@ class Memory {
     }
 
     private void modify(int addr, String byteData) {
+        addr = Util.signedToUnsigned(addr);
         if (addr > 0x10000) {
             System.out.println("Error: Address " + addr + " is outside memory");
             System.out.println("ac = " + ac);
@@ -34,6 +35,7 @@ class Memory {
     }
 
     private String read(int addr) {
+        addr = Util.signedToUnsigned(addr);
         if (addr >= 0x10000) {
             System.out.println("Error: Address " + addr + " is outside memory");
             return "00";
@@ -42,6 +44,7 @@ class Memory {
     }
 
     private String readWord(int addr) {
+        addr = Util.signedToUnsigned(addr);
         if (addr >= 0x10000 - 1) {
             System.out.println("Error: Address " + addr + " is outside memory");
             return "0000";
@@ -56,7 +59,7 @@ class Memory {
         BufferedReader br = new BufferedReader(new FileReader("objAbs.txt"));
         while (true) {
             String co = read(ic);
-            int op = Integer.valueOf(read(ic + 1).concat(read(ic + 2)), 16);
+            int op = Util.wordToInt(read(ic + 1).concat(read(ic + 2)));
             ic += 3;
             switch (co) {
                 case "00":  // JP
@@ -74,31 +77,31 @@ class Memory {
                     ac = op;
                     break;
                 case "04":  // +
-                    ac += Integer.valueOf(readWord(op), 16);
+                    ac += Util.wordToInt(readWord(op));
                     break;
                 case "05":  // -
-                    ac -= Integer.valueOf(readWord(op), 16);
+                    ac -= Util.wordToInt(readWord(op));
                     break;
                 case "06":  // *
-                    ac *= Integer.valueOf(readWord(op), 16);
+                    ac *= Util.wordToInt(readWord(op));
                     break;
                 case "07":  // /
-                    ac /= Integer.valueOf(readWord(op), 16);
+                    ac /= Util.wordToInt(readWord(op));
                     break;
                 case "08":  // LD
-                    ac = Integer.valueOf(readWord(op), 16);
+                    ac = Util.wordToInt(readWord(op));
                     break;
                 case "09":  // MM
-                    modify(op, intToWord(ac).substring(0, 2));
-                    modify(op + 1, intToWord(ac).substring(2));
+                    modify(op, Util.intToWord(ac).substring(0, 2));
+                    modify(op + 1, Util.intToWord(ac).substring(2));
                     break;
                 case "0a":  // SC;
-                    modify(op - 2, intToWord(ic).substring(0, 2));
-                    modify(op - 1, intToWord(ic).substring(2));
+                    modify(op - 2, Util.intToWord(ic).substring(0, 2));
+                    modify(op - 1, Util.intToWord(ic).substring(2));
                     ic = op;
                     break;
                 case "0b":  // RS
-                    ic = Integer.valueOf(readWord(op - 2), 16);
+                    ic = Util.wordToInt(readWord(op - 2));
                     break;
                 case "0c":  // HM
                     // TODO: parar (?)
@@ -108,20 +111,20 @@ class Memory {
                     if (op == 0) {
                         String readByte = Character.toString((char) br.read());
                         readByte = readByte.concat(Character.toString((char) br.read()));
-                        ac = Integer.valueOf(readByte, 16);
+                        ac = Util.wordToInt(readByte);
                     } else if (op == 1) {
                         Scanner scanIn = new Scanner(System.in);
                         String input = scanIn.nextLine();
-                        ac = Integer.valueOf(input, 16);
+                        ac = Util.wordToInt(input);
                     }
                     break;
                 case "0e":  // PD
                     if (op == 0) {
                         pc = ac;
                     } else if (op == 1) {
-                        modify(pc++, intToWord(ac).substring(2));
+                        modify(pc++, Util.intToWord(ac).substring(2));
                     } else if (op == 2) {
-                        System.out.println("ACC: " + intToWord(ac));
+                        System.out.println("ACC: " + Util.intToWord(ac));
                     }
                     break;
                 case "0f":  // SO
@@ -133,22 +136,10 @@ class Memory {
         }
     }
 
-    private String intToWord(int data) {
-        String ret = Integer.toHexString(data);
-        if (ret.length() > 4) {
-            System.out.println("Error: Value " + data + " is not a word");
-            System.out.println("ac = " + ac);
-            System.out.println("ic = " + ic);
-        }
-        while (ret.length() < 4)
-            ret = "0".concat(ret);
-        return ret;
-    }
-
     void logOff() {
         System.out.println("Value of registers: ");
-        System.out.println("ACC: " + intToWord(ac));
-        System.out.println("IC: " + intToWord(ic));
+        System.out.println("ACC: " + Util.intToWord(ac));
+        System.out.println("IC: " + Util.intToWord(ic));
         System.out.println("Turning off Virtual Machine...");
     }
 }

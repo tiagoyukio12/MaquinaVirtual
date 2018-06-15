@@ -30,18 +30,18 @@ class Assembler {
                 if (line.charAt(0) != ' ') {
                     // Declaracao de simbolo
                     if (split.length > 1) {
-                        tabSimb.put(split[0], intToWord(ic));
+                        tabSimb.put(split[0], Util.intToWord(ic));
                         ic += 2;
                     }
                     // Declaracao de label
                     else {
                         ic += 2;
-                        tabSimb.put(split[0], intToWord(ic));
+                        tabSimb.put(split[0], Util.intToWord(ic));
                     }
                 } else {
                     switch (split[1]) {
                         case "@":
-                            ic = Integer.valueOf(split[2], 16);
+                            ic = Util.wordToInt(split[2]);
                             byteCounter = ic;
                             break;
                         case "#":
@@ -71,7 +71,7 @@ class Assembler {
                 if (line.charAt(0) == ' ') {
                     switch (split[1]) {
                         case "@":
-                            ic = Integer.valueOf(split[2], 16);
+                            ic = Util.wordToInt(split[2]);
                             icString = Integer.toHexString(ic);
                             while (icString.length() < 4) {
                                 icString = "0".concat(icString);
@@ -80,7 +80,7 @@ class Assembler {
                             while (byteCounterString.length() < 2) {
                                 byteCounterString = "0".concat(byteCounterString);
                             }
-                            writer.write(intToWord(ic) + intToWord(byteCounter).substring(2));
+                            writer.write(Util.intToWord(ic) + Util.intToWord(byteCounter).substring(2));
                             break;
                         case "#":
                             String inicExec = tabSimb.get(split[2]);
@@ -167,15 +167,5 @@ class Assembler {
             e.printStackTrace();
         }
         writer.close();
-    }
-
-    private String intToWord(int data) {
-        String ret = Integer.toHexString(data);
-        if (ret.length() > 4) {
-            System.out.println("Error: Value " + data + " is not a word");
-        }
-        while (ret.length() < 4)
-            ret = "0".concat(ret);
-        return ret;
     }
 }
