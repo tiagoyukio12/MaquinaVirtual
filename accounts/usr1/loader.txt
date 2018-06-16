@@ -19,13 +19,13 @@ DADO
     JZ  EXEC
     JP  DADO
 EXEC
+    LV  0000
+    PD  0000
     GD  0000
-    *   CEM
-    MM  PC
+    PD  0001
     GD  0000
-    +   PC
-    MM  PC
-    SO  0001       ; Executa o programa carregado
+    PD  0001
+    RS  INIC       ; Executa o programa carregado
 CEM K  100
 PC  K  0
 COUNT K 0
