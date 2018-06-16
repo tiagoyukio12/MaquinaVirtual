@@ -1,8 +1,6 @@
 package virtualMachine;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.Scanner;
 
 class Memory {
@@ -40,6 +38,8 @@ class Memory {
             System.out.println("Error: Address " + addr + " is outside memory");
             return "00";
         }
+        if (memory[addr] == null)
+            return "00";
         return memory[addr];
     }
 
@@ -55,8 +55,10 @@ class Memory {
     void run(int addr) throws IOException {
         ic = addr;
         ac = 0;
-        int pc = 0;  // ponteiro utilizado por PD
+        int pc = 0;  // ponteiro utilizado por PD e GD
         BufferedReader br = new BufferedReader(new FileReader("objAbs.txt"));
+        File output = new File("dump.txt");
+        PrintWriter writer = new PrintWriter(output);
         while (true) {
             String co = read(ic);
             int op = Util.wordToInt(read(ic + 1).concat(read(ic + 2)));
@@ -116,6 +118,10 @@ class Memory {
                         Scanner scanIn = new Scanner(System.in);
                         String input = scanIn.nextLine();
                         ac = Util.wordToInt(input);
+                    } else if (op == 2) {
+                        pc = ac;
+                    } else if (op == 3) {
+                        ac = Util.wordToInt(read(pc++));
                     }
                     break;
                 case "0e":  // PD
@@ -125,10 +131,13 @@ class Memory {
                         modify(pc++, Util.intToWord(ac).substring(2));
                     } else if (op == 2) {
                         System.out.println("ACC: " + Util.intToWord(ac));
+                    } else if (op == 3) {
+                        writer.write(Util.intToWord(ac).substring(2));
                     }
                     break;
                 case "0f":  // SO
                     br.close();
+                    writer.close();
                     if (op == 1)
                         run(ac);
                     return;

@@ -42,7 +42,8 @@ public class Main {
                     break;
                 case "RUN":
                     Assembler assembler = new Assembler();
-                    assembler.gerarCodObj(".\\accounts\\" + userName + "\\" + cmd[1]);
+                    if (cmd.length > 1)
+                        assembler.gerarCodObj(".\\accounts\\" + userName + "\\" + cmd[1]);
                     memory.run(2);
                     break;
                 case "END":

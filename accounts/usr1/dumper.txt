@@ -1,0 +1,34 @@
+    @    0064    ; Carrega programa em 0064
+INIC
+    GD   0001    ; Pega endereco inicial do usuario
+    GD   0002    ; Comeca leitura a partir do end inicial
+    MM   END
+    /    CEM
+    PD   0003
+    LD   END
+    PD   0003
+    GD   0001    ; Quantidade de bytes a serem salvos
+    PD   0003
+    MM   COUNT   
+    JP   DUMP
+DUMP
+    GD   0003
+    PD   0003
+    LD   COUNT
+    -    UM
+    MM   COUNT
+    JZ   FIM
+    JP   DUMP
+FIM
+    GD  0001
+    MM  END
+    /   CEM
+    PD  0003
+    LD  END
+    PD  0003
+    SO  0000
+CEM K   100
+END K   0
+COUNT K 0
+UM  K   1
+    #    INIC    ; Inicia programa em INIC
