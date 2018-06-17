@@ -11,8 +11,9 @@ POS
     JP   POS
 INIC
     GD   0001    ; Le 2 bytes digitados pelo usuario
-    JN   NEG
-    JP   POS
+    JZ   ACAB    ; Termina se receber zero
+    JN   NEG     ; Incrementa até zero se receber negativo
+    JP   POS     ; Decrementa até zero caso contrario
 ACAB
     SO   0000      ; Retorna comando ao Sistema Operacional
 UM  K       1
