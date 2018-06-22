@@ -14,6 +14,22 @@ class Assembler {
         byteCounter = 0;
         tabSimb = new HashMap<>();
         tabMne = new HashMap<>();
+        tabMne.put("JP", 3);
+        tabMne.put("JZ", 3);
+        tabMne.put("JN", 3);
+        tabMne.put("LV", 3);
+        tabMne.put("+", 3);
+        tabMne.put("-", 3);
+        tabMne.put("*", 3);
+        tabMne.put("/", 3);
+        tabMne.put("LD", 3);
+        tabMne.put("MM", 3);
+        tabMne.put("SC", 3);
+        tabMne.put("RS", 3);
+        tabMne.put("HM", 3);
+        tabMne.put("GD", 3);
+        tabMne.put("PD", 3);
+        tabMne.put("SO", 3);
     }
 
     void gerarCodObj(String filename) throws FileNotFoundException {
@@ -48,8 +64,10 @@ class Assembler {
                             // termina passo
                             break;
                         default:   // Uma das 16 instrucoes de 2 bytes
-                            ic += 3;
-                            // TODO: usar tabMne e checar erros
+                            if (tabMne.get(split[1]) != null)
+                                ic += tabMne.get(split[1]);
+                            else
+                                System.out.println("Error: " + split[2] + " is not a valid instruction.");
                             break;
                     }
                 }
@@ -84,7 +102,7 @@ class Assembler {
                             break;
                         case "#":
                             String inicExec = tabSimb.get(split[2]);
-                            writer.write(inicExec); // writer.write("\n" + inicExec);
+                            writer.write(inicExec);
                             break;
                         case "JP":
                             writer.write("00" + tabSimb.get(split[2]));
