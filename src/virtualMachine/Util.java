@@ -2,10 +2,6 @@ package virtualMachine;
 
 public class Util {
     static String intToWord(int data) {
-        if (data > 32767)
-            System.out.println("Error: Overflow. Value " + data + " is too big");
-        if (data < -32768)
-            System.out.println("Error: Underflow. Value " + data + " is too small");
         String ret = Integer.toHexString(data);
         if (ret.length() > 4)
             ret = ret.substring(ret.length() - 4, ret.length());
