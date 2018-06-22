@@ -67,7 +67,7 @@ class Assembler {
                             if (tabMne.get(split[1]) != null)
                                 ic += tabMne.get(split[1]);
                             else
-                                System.out.println("Error: " + split[2] + " is not a valid instruction.");
+                                System.out.println("Error: " + split[1] + " is not a valid instruction.");
                             break;
                     }
                 }
